@@ -6,7 +6,7 @@ using Android.OS;
 
 namespace Sand.PhoneWord
 {
-    [Activity(Label = "Sand.PhoneWord", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Phone Number Fun", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         public string TranslatedNumber { get; set; }
