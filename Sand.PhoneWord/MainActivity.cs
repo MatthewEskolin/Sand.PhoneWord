@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Widget;
 using Android.OS;
 
@@ -11,6 +14,16 @@ namespace Sand.PhoneWord
     {
         public string TranslatedNumber { get; set; }
 
+        private  const int REQUEST_CALL_PERMISSION = 1;
+
+        private static string[] REQUEST_CALL =
+        {
+            Manifest.Permission.CallPhone
+        };
+
+
+
+
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -18,13 +31,12 @@ namespace Sand.PhoneWord
 
             SetContentView(Resource.Layout.Main);
 
-          
+
             var translateButton = FindViewById<Button>(Resource.Id.btnTranslate);
             var callButton = FindViewById<Button>(Resource.Id.btnCall);
 
 
             callButton.Enabled = false;
-
 
             translateButton.Click += TranslateButton;
             callButton.Click += MakeCall;
@@ -34,7 +46,48 @@ namespace Sand.PhoneWord
 
         }
 
-        private void MakeCall(object sender, EventArgs e)
+        public void GetMakeCallPermissionAsync()
+        {
+            const string permission = Manifest.Permission.CallPhone;
+            if (CheckSelfPermission(permission) != (int) Permission.Granted)
+            {
+                if (ShouldShowRequestPermissionRationale(Manifest.Permission.CallPhone))
+                {
+
+                }
+                else
+                {
+                    RequestPermissions(REQUEST_CALL, REQUEST_CALL_PERMISSION);
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
+        public  override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            switch (requestCode)
+            {
+                case REQUEST_CALL_PERMISSION:
+                {
+                    if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                    {
+
+                        
+                    }
+
+                    break;
+                }
+            }
+            
+            
+        }
+
+
+    private void MakeCall(object sender, EventArgs e)
         {
             var callDialog = new AlertDialog.Builder(this);
 
@@ -53,6 +106,9 @@ namespace Sand.PhoneWord
 
         private void DialogClick(object sender, DialogClickEventArgs dialogClickEventArgs)
         {
+            GetMakeCallPermissionAsync();
+
+
             var callIntent = new Intent(Intent.ActionCall);
             callIntent.SetData(Android.Net.Uri.Parse($"tel:{TranslatedNumber}"));
             StartActivity(callIntent);
