@@ -2,4 +2,6 @@
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">Sand.PhoneWord</string>
+    <string name="callHistory">Call History</string>
+  
 </resources>

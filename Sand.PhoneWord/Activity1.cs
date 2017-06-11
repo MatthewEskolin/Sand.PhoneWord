@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
@@ -9,7 +10,8 @@ using Android.OS;
 
 namespace Sand.PhoneWord
 {
-    [Activity(Label = "Phone Number Fun", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "SandPhone", Icon = "@drawable/icon")]
+    [IntentFilter(new[]{Android.Content.Intent.ActionMain},Categories = new[]{Android.Content.Intent.CategoryLauncher})]
     public class MainActivity : Activity
     {
         public string TranslatedNumber { get; set; }
@@ -21,6 +23,7 @@ namespace Sand.PhoneWord
             Manifest.Permission.CallPhone
         };
 
+        private static readonly List<string> phoneNumbers = new List<string>();
 
 
 
@@ -29,20 +32,34 @@ namespace Sand.PhoneWord
         {
             base.OnCreate(bundle);
 
+
+
+
             SetContentView(Resource.Layout.Main);
 
 
             var translateButton = FindViewById<Button>(Resource.Id.btnTranslate);
             var callButton = FindViewById<Button>(Resource.Id.btnCall);
+            var btnCallHistory = FindViewById<Button>(Resource.Id.btnCallHistory);
+
+
 
 
             callButton.Enabled = false;
 
             translateButton.Click += TranslateButton;
             callButton.Click += MakeCall;
+            btnCallHistory.Click += ShowHistory;
 
 
 
+        }
+
+        private void ShowHistory(object sender, EventArgs e)
+        {
+            var intent = new Intent(this, typeof(CallHistoryActivity));
+            intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
+            StartActivity(intent);
 
         }
 
@@ -107,6 +124,13 @@ namespace Sand.PhoneWord
         private void DialogClick(object sender, DialogClickEventArgs dialogClickEventArgs)
         {
             GetMakeCallPermissionAsync();
+
+            phoneNumbers.Add(TranslatedNumber);
+
+            var btnCallHistory = FindViewById<Button>(Resource.Id.btnCallHistory);
+            btnCallHistory.Enabled = true;
+
+
 
 
             var callIntent = new Intent(Intent.ActionCall);
