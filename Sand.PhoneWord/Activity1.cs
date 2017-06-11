@@ -14,7 +14,7 @@ namespace Sand.PhoneWord
     {
         public string TranslatedNumber { get; set; }
 
-        private  const int REQUEST_CALL_PERMISSION = 1;
+        private const int REQUEST_CALL_PERMISSION = 1;
 
         private static string[] REQUEST_CALL =
         {
@@ -49,7 +49,7 @@ namespace Sand.PhoneWord
         public void GetMakeCallPermissionAsync()
         {
             const string permission = Manifest.Permission.CallPhone;
-            if (CheckSelfPermission(permission) != (int) Permission.Granted)
+            if (CheckSelfPermission(permission) != (int)Permission.Granted)
             {
                 if (ShouldShowRequestPermissionRationale(Manifest.Permission.CallPhone))
                 {
@@ -67,7 +67,7 @@ namespace Sand.PhoneWord
         }
 
 
-        public  override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             switch (requestCode)
             {
@@ -76,18 +76,18 @@ namespace Sand.PhoneWord
                     if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
                     {
 
-                        
+
                     }
 
                     break;
                 }
             }
-            
-            
+
+
         }
 
 
-    private void MakeCall(object sender, EventArgs e)
+        private void MakeCall(object sender, EventArgs e)
         {
             var callDialog = new AlertDialog.Builder(this);
 
