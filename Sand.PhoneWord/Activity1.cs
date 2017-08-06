@@ -41,6 +41,9 @@ namespace Sand.PhoneWord
             var translateButton = FindViewById<Button>(Resource.Id.btnTranslate);
             var callButton = FindViewById<Button>(Resource.Id.btnCall);
             var btnCallHistory = FindViewById<Button>(Resource.Id.btnCallHistory);
+            var btnStartColorSwitcher =  FindViewById<Button>(Resource.Id.btnStartColorSwitcher);
+
+
 
 
 
@@ -50,9 +53,14 @@ namespace Sand.PhoneWord
             translateButton.Click += TranslateButton;
             callButton.Click += MakeCall;
             btnCallHistory.Click += ShowHistory;
+            btnStartColorSwitcher.Click += StartColorSwitch;
 
 
+        }
 
+        private void StartColorSwitch(object sender, EventArgs e)
+        {
+            StartActivity(typeof(ColorSwitcherActivity));        
         }
 
         private void ShowHistory(object sender, EventArgs e)
